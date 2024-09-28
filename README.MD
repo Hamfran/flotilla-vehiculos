@@ -30,7 +30,7 @@ DB_DATABASE=flotilla_vehiculos
 Asegúrate de reemplazar tu_usuario_mysql y tu_contraseña_mysql con tus credenciales correctas de MySQL.
 
 
-#Configurar la base de datos:
+##Configurar la base de datos:
 
 Importa el esquema de la base de datos a tu instalación de MySQL. Puedes hacerlo desde MySQL Workbench o línea de comandos. El archivo SQL con la estructura de la base de datos debe estar en tu repositorio, llamado flotilla_vehiculos.sql. Para importarlo desde MySQL Workbench:
 
