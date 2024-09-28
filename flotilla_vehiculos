@@ -10,11 +10,9 @@ MySQL (o MySQL Workbench)
 Instalación
 Sigue los pasos a continuación para configurar el entorno de desarrollo local:
 
-Clonar el repositorio:
-
 descarga este repositorio en tu máquina local usando el siguiente comando:
 https://github.com/Hamfran/flotilla-vehiculos.git
-
+descomprimelo 
 importalo a tu Visual Code
 
 Instalar dependencias:
