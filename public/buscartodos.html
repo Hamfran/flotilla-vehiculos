@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mostrar Todos los Vehículos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-radius: 5px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+            z-index: 1; /* Asegura que el contenido esté encima de la imagen */
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #resultado {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .vehiculo {
+            margin-bottom: 10px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #e9ecef;
+        }
+        /* Estilo de la imagen */
+        .background-image {
+            position: absolute;
+            top: 15%;
+            right: 5px; /* Ajusta esta propiedad según dónde quieres que esté la imagen */
+            width: 500px;  /* Ajusta el tamaño de la imagen */
+            transform: translateY(-50%);
+            opacity: 0.9;  /* Para hacer la imagen más tenue */
+            z-index: 0;    /* Para asegurarte de que quede debajo del contenido del formulario */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Gestión de Vehículos</h1>
+    <h2>Todos los Vehículos</h2>
+    <button id="getAllBtn">Mostrar Todos los Vehículos</button>
+
+    <div id="resultado"></div>
+    
+   <!-- Imagen colocada afuera del contenedor -->
+   <img src="/imagenes/buscart.jpg" class="background-image">
+    <script>
+        // Función para obtener todos los vehículos
+        document.getElementById('getAllBtn').addEventListener('click', function() {
+            fetch('/vehiculos')
+                .then(response => response.json())
+                .then(data => {
+                    const vehiculosList = document.getElementById('resultado');
+                    vehiculosList.innerHTML = ''; // Limpiar la lista antes de agregar nuevos datos
+                    data.forEach(vehiculo => {
+                        vehiculosList.innerHTML += `
+                            <div class="vehiculo">
+                                <p>ID: ${vehiculo.id}</p>
+                                <p>Marca: ${vehiculo.marca}</p>
+                                <p>Modelo: ${vehiculo.modelo}</p>
+                                <p>Año: ${vehiculo.anio}</p>
+                                <p>Placa: ${vehiculo.placa}</p>
+                                <p>Estado: ${vehiculo.estado}</p>
+                            </div>
+                        `;
+                    });
+                })
+                .catch((error) => console.error('Error:', error));
+        });
+    </script>
+
+</body>
+</html>

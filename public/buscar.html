@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Vehículo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+            z-index: 1; /* Asegura que el contenido esté encima de la imagen */
+        }
+
+        button {
+            padding: 15px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            width: 80%;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #vehiculoResult {
+            margin-top: 20px;
+        }
+        /* Estilo de la imagen */
+        .background-image {
+            position: absolute;
+            top: 45%;
+            left: 20px; /* Ajusta esta propiedad según dónde quieres que esté la imagen */
+            width: 650px;  /* Ajusta el tamaño de la imagen */
+            transform: translateY(-50%);
+            opacity: 0.9;  /* Para hacer la imagen más tenue */
+            z-index: 0;    /* Para asegurarte de que quede debajo del contenido del formulario */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Buscar Vehículo</h1>
+        <form id="searchVehiculoForm">
+            <label for="searchVehiculoId">ID del Vehículo:</label>
+            <input type="number" id="searchVehiculoId" name="searchVehiculoId" required><br><br>
+            <button type="submit">Buscar Vehículo</button>
+        </form>
+        <div id="vehiculoResult"></div>
+    </div>
+    <!-- Imagen colocada afuera del contenedor -->
+    <img src="/imagenes/buscar.jpeg" class="background-image">
+
+    <script>
+        document.getElementById('searchVehiculoForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const id = document.getElementById('searchVehiculoId').value;
+
+            fetch(`/vehiculos/${id}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No se encontró el vehículo');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const vehiculoResult = document.getElementById('vehiculoResult');
+                if (data) {
+                    vehiculoResult.innerHTML = `<p>ID: ${data.id} - Marca: ${data.marca} - Modelo: ${data.modelo} - Año: ${data.anio} - Placa: ${data.placa} - Estado: ${data.estado}</p>`;
+                } else {
+                    vehiculoResult.innerHTML = `<p>No se encontró el vehículo con ID ${id}.</p>`;
+                }
+            })
+            .catch((error) => {
+                document.getElementById('vehiculoResult').innerHTML = `<p>${error.message}</p>`;
+                console.error('Error:', error);
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Usuario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+            z-index: 1; /* Asegura que el contenido esté encima de la imagen */
+        }
+
+        button {
+            padding: 15px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            width: 80%;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+        /* Estilo de la imagen */
+        .background-image {
+            position: absolute;
+            top: 45%;
+            left: 20px; /* Ajusta esta propiedad según dónde quieres que esté la imagen */
+            width: 650px;  /* Ajusta el tamaño de la imagen */
+            transform: translateY(-50%);
+            opacity: 0.9;  /* Para hacer la imagen más tenue */
+            z-index: 0;    /* Para asegurarte de que quede debajo del contenido del formulario */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Crear Usuario</h1>
+        <!-- Formulario de registro de usuario -->
+        <h2>Ingrese los datos de la persona</h2>
+        <form id="registerForm">
+            <input type="text" id="newNombreUsuario" placeholder="Usuario" required>
+            <input type="password" id="newContrasena" placeholder="Contraseña" required>
+            <select id="newRol" required>
+                <option value="user">Usuario</option>
+                <option value="admin">Administrador</option>
+            </select>
+            <button type="submit">Registrar Usuario</button>
+        </form>
+    </div>
+    <!-- Imagen colocada afuera del contenedor -->
+    <img src="/imagenes/crear.png" class="background-image">
+
+    <script>
+       // Manejar registro de usuario
+       document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const nombre_usuario = document.getElementById('newNombreUsuario').value;
+            const contrasena = document.getElementById('newContrasena').value;
+            const rol = document.getElementById('newRol').value;
+
+            fetch('/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ nombre_usuario, contrasena, rol }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                // Limpiar el formulario de registro
+                document.getElementById('registerForm').reset();
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+
+</body>
+</html>

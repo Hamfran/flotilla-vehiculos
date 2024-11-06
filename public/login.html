@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login y Registro de Usuarios</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        input {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            margin-top: 10px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Formulario de inicio de sesión -->
+        <h2>Iniciar Sesión</h2>
+        <form id="loginForm">
+            <input type="text" id="nombre_usuario" placeholder="Usuario" required>
+            <input type="password" id="contrasena" placeholder="Contraseña" required>
+            <button type="submit">Iniciar Sesión</button>
+        </form>
+        <div class="message" id="loginMessage"></div>
+
+        
+    </div>
+
+    <script>
+         // Manejar inicio de sesión
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const nombre_usuario = document.getElementById('nombre_usuario').value;
+        const contrasena = document.getElementById('contrasena').value;
+
+        fetch('/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ nombre_usuario, contrasena }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            const messageDiv = document.getElementById('loginMessage');
+            messageDiv.textContent = data.message; // Mostrar mensaje de error o éxito
+            if (data.user) {
+                // Verificar si el usuario es 'admin' o 'user' y redirigirlo
+                if (data.user.rol === 'admin') {
+                    window.location.href = 'index.html'; // Redirigir a la página principal si es admin
+                } else if (data.user.rol === 'user') {
+                    window.location.href = 'indexusuario.html'; // Redirigir a la página de usuario si es un user
+                }
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+    </script>
+</body>
+</html>

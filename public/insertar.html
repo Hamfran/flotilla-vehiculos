@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insertar Vehículo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            position: relative; /* Asegura que los elementos hijos con posición absoluta se coloquen correctamente */
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+            z-index: 1; /* Asegura que el contenido esté encima de la imagen */
+        }
+
+        button {
+            padding: 15px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            width: 80%;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Estilo de la imagen */
+        .background-image {
+            position: absolute;
+            top: 75%;
+            left: 10px; /* Ajusta esta propiedad según dónde quieres que esté la imagen */
+            width: 652px;  /* Ajusta el tamaño de la imagen */
+            transform: translateY(-50%);
+            opacity: 0.9;  /* Para hacer la imagen más tenue */
+            z-index: 0;    /* Para asegurarte de que quede debajo del contenido del formulario */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Insertar Vehículo</h1>
+        <form id="insertVehiculoForm">
+            <label for="marca">Marca:</label>
+            <input type="text" id="marca" name="marca" required><br><br>
+
+            <label for="modelo">Modelo:</label>
+            <input type="text" id="modelo" name="modelo" required><br><br>
+
+            <label for="anio">Año:</label>
+            <input type="number" id="anio" name="anio" required><br><br>
+
+            <label for="placa">Placa:</label>
+            <input type="text" id="placa" name="placa" required><br><br>
+
+            <label for="estado">Estado:</label>
+            <select id="estado" name="estado" required>
+                <option value="Perfecto">Perfecto</option>
+                <option value="Daño menor">Daño menor</option>
+                <option value="Reparación urgente">Reparación urgente</option>
+                <option value="En reparación">En reparación</option>
+                <option value="Descarte">Descarte</option>
+            </select><br><br>
+
+            <button type="submit">Insertar Vehículo</button>
+        </form>
+    </div>
+
+    <!-- Imagen colocada afuera del contenedor -->
+    <img src="/imagenes/insertar.jpg" class="background-image">
+
+    <script>
+        document.getElementById('insertVehiculoForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const marca = document.getElementById('marca').value;
+            const modelo = document.getElementById('modelo').value;
+            const anio = document.getElementById('anio').value;
+            const placa = document.getElementById('placa').value;
+            const estado = document.getElementById('estado').value;
+
+            fetch('/vehiculos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ marca, modelo, anio, placa, estado }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                document.getElementById('insertVehiculoForm').reset();
+            })
+            .catch((error) => console.error('Error:', error));
+        });
+    </script>
+
+</body>
+</html>
